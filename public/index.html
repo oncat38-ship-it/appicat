@@ -1,237 +1,35 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="AIと一緒に、便利をつくる。日常や仕事に役立つWebアプリを集めたAppiCat。">
 <title>AppiCat｜AIと一緒に、便利をつくる。</title>
 <style>
-:root{
-  --navy:#101b30;--navy2:#172944;--blue:#5e9ed8;--pale:#eaf3fb;
-  --ink:#202b3b;--muted:#68778b;--line:#e4eaf0;--paper:#f6f8fb;
-  --white:#fff;--radius:20px;--shadow:0 12px 35px rgba(24,47,76,.07);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.7}
-a{color:inherit;text-decoration:none}
-button,input{font:inherit}
-.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
-header{height:76px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);display:flex;align-items:center;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.25rem;letter-spacing:.02em}
-.logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(145deg,#1c3859,#315b83);display:grid;place-items:center;color:#d9edff;font-size:21px;box-shadow:0 5px 14px #19324b2b}
-nav{display:flex;align-items:center;gap:27px;font-size:.9rem;color:#4e5c6e}
-nav a:hover{color:#367bb5}
-.menu{display:none;border:0;background:transparent;font-size:1.5rem;color:var(--navy)}
-.hero{background:radial-gradient(ellipse at 80% 20%,#254768 0,transparent 34%),linear-gradient(125deg,#0d192c,#172c47 65%,#1d3855);color:white;overflow:hidden;position:relative}
-.hero:after{content:"";position:absolute;width:390px;height:390px;border:1px solid #ffffff13;border-radius:50%;right:-100px;bottom:-230px;box-shadow:0 0 0 45px #ffffff08,0 0 0 90px #ffffff05}
-.hero-inner{min-height:430px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:30px;padding-top:55px;padding-bottom:60px;position:relative;z-index:1}
-.eyebrow{font-size:.75rem;letter-spacing:.18em;color:#9bc9f1;font-weight:700}
-.hero h1{font-size:clamp(2.1rem,5vw,3.65rem);line-height:1.25;letter-spacing:.015em;margin:15px 0}
-.hero h1 span{color:#8ec9fa}
-.hero p{color:#d0dbea;max-width:540px;margin:0 0 27px}
-.searchbox{display:flex;align-items:center;gap:10px;background:white;color:#7a8796;border-radius:14px;padding:7px 8px 7px 17px;max-width:510px;box-shadow:0 12px 30px #06132645}
-.searchbox input{border:0;outline:0;min-width:0;flex:1;padding:9px 0;color:var(--ink);background:transparent}
-.searchbox button{border:0;background:#2e6fa8;color:white;border-radius:10px;padding:10px 17px;cursor:pointer}
-.hero-note{font-size:.78rem;color:#a9c1d9;margin-top:13px}
-.mascot-area{display:flex;justify-content:center;align-items:center;min-height:270px;position:relative}
-.orbit{width:245px;height:245px;border:1px solid #8ebce344;border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 70px #6aa9e51c,inset 0 0 55px #6aa9e50d}
-.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid #8ebce322;border-radius:50%}
-.orbit:before{inset:22px}.orbit:after{inset:-22px}
-.cat{font-size:100px;filter:drop-shadow(0 12px 18px #0007);transform:translateY(-5px)}
-.float-tag{position:absolute;background:#ffffff13;border:1px solid #ffffff26;color:#dcecff;border-radius:30px;padding:7px 13px;font-size:.75rem;backdrop-filter:blur(8px)}
-.tag1{top:25px;right:0}.tag2{bottom:25px;left:0}
-section{padding:76px 0}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:27px}
-.kicker{font-size:.72rem;letter-spacing:.16em;color:#5489b8;font-weight:800}
-h2{font-size:clamp(1.55rem,3vw,2.1rem);line-height:1.3;margin:5px 0 0;color:#1c2c42}
-.section-sub{color:var(--muted);font-size:.9rem;margin:7px 0 0}
-.text-link{font-size:.88rem;color:#397eb6;font-weight:700;white-space:nowrap}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.card{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:23px;box-shadow:0 4px 15px #1d38550a;transition:.2s;display:flex;flex-direction:column;min-height:210px}
-.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#c8dced}
-.card-top{display:flex;justify-content:space-between;align-items:center}
-.app-icon{width:48px;height:48px;border-radius:15px;background:#eaf3fb;display:grid;place-items:center;font-size:23px}
-.status{font-size:.7rem;font-weight:700;border-radius:30px;padding:4px 10px;background:#e7f5ed;color:#28784b}
-.status.dev{background:#fff4df;color:#94631c}
-.card h3{font-size:1.05rem;margin:16px 0 5px}
-.card p{font-size:.85rem;color:var(--muted);margin:0;flex:1}
-.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:17px;padding-top:13px;border-top:1px solid #eef1f5;font-size:.77rem;color:#708096}
-.category-row{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
-.chip{border:1px solid #dce5ee;background:white;color:#607084;padding:7px 15px;border-radius:30px;font-size:.82rem;cursor:pointer}
-.chip.active,.chip:hover{background:#e8f2fb;border-color:#bdd7ed;color:#28699e}
-.all-apps{background:#fff}
-.all-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.mini-card{display:flex;gap:15px;align-items:center;background:#fbfcfe;border:1px solid var(--line);border-radius:16px;padding:17px}
-.mini-card .app-icon{flex:none}
-.mini-card h3{font-size:.94rem;margin:0 0 3px}
-.mini-card p{font-size:.79rem;color:var(--muted);margin:0}
-.mini-arrow{margin-left:auto;color:#8aa0b6;font-size:1.2rem}
-.journal{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.journal-card{background:white;border:1px solid var(--line);border-radius:18px;padding:23px;display:flex;gap:16px}
-.journal-icon{width:44px;height:44px;flex:none;border-radius:13px;background:#eef4fa;display:grid;place-items:center;font-size:20px}
-.journal-card small{color:#5489b8;font-weight:700}
-.journal-card h3{margin:4px 0;font-size:1rem}
-.journal-card p{font-size:.83rem;color:var(--muted);margin:0}
-.support{background:linear-gradient(120deg,#eaf2fa,#f3f7fb);border:1px solid #dce8f3;border-radius:24px;padding:34px;display:flex;align-items:center;justify-content:space-between;gap:25px}
-.support h2{font-size:1.5rem}
-.support p{color:#61748a;font-size:.88rem;margin:8px 0 0}
-.primary{display:inline-flex;align-items:center;justify-content:center;background:#245f91;color:white;border-radius:12px;padding:12px 20px;font-weight:700;font-size:.88rem;white-space:nowrap;box-shadow:0 6px 15px #245f9126}
-.primary:hover{background:#194e7b}
-footer{background:#101b30;color:#d9e4f0;padding:38px 0 25px}
-.footer-top{display:flex;justify-content:space-between;gap:30px;align-items:start}
-footer .brand{color:white}
-footer p{font-size:.8rem;color:#9fb0c5;margin:10px 0}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap;font-size:.78rem;color:#c1cede}
-.copyright{border-top:1px solid #ffffff1b;margin-top:28px;padding-top:18px;color:#8194aa;font-size:.72rem}
-.empty{display:none;color:var(--muted);padding:20px;text-align:center}
-@media(max-width:760px){
- .wrap{width:min(100% - 30px,600px)}
- header{height:66px}nav{display:none}.menu{display:block}
- .hero-inner{grid-template-columns:1fr;min-height:auto;padding:55px 0 42px;gap:15px}
- .hero h1{font-size:2.35rem}.mascot-area{min-height:205px}.orbit{width:175px;height:175px}.cat{font-size:74px}
- .tag1{right:8%}.tag2{left:8%}
- section{padding:55px 0}
- .cards{grid-template-columns:1fr}.card{min-height:180px}
- .all-grid,.journal{grid-template-columns:1fr}
- .section-head{align-items:start;flex-direction:column;gap:8px}
- .support{align-items:flex-start;flex-direction:column;padding:25px}
- .footer-top{flex-direction:column}
-}
-</style>
-</head>
-<body>
-<header>
- <div class="wrap nav">
-  <a class="brand" href="#"><span class="logo">✦</span><span>AppiCat</span></a>
-  <nav><a href="#apps">アプリ一覧</a><a href="#journal">制作ノート</a><a href="#about">このサイトについて</a><a href="#contact">お問い合わせ</a></nav>
-  <button class="menu" aria-label="メニュー">☰</button>
- </div>
-</header>
+:root{--navy:#101b30;--blue:#4e87b8;--ink:#202b3b;--muted:#68778b;--line:#e4eaf0;--paper:#f5f7fa;--shadow:0 12px 35px rgba(24,47,76,.08)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.7}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1060px,calc(100% - 36px));margin:auto}header{height:72px;background:#ffffffed;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;backdrop-filter:blur(12px)}.nav{height:100%;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#1c3859,#315b83);display:grid;place-items:center;color:#d9edff;font-size:21px}.nav-links{display:flex;gap:24px;color:#536276;font-size:.88rem}.hero{background:radial-gradient(ellipse at 85% 10%,#294c6c 0,transparent 35%),linear-gradient(125deg,#0d192c,#1b3552);color:white;padding:66px 0 58px}.hero-inner{display:grid;grid-template-columns:1fr auto;align-items:center;gap:28px}.eyebrow,.kicker{font-size:.72rem;letter-spacing:.16em;font-weight:800;color:#8dbce5}.hero h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.25;margin:13px 0}.hero h1 span{color:#8ec9fa}.hero p{color:#d0dbea;margin:0;max-width:570px}.hero-cat{font-size:100px;filter:drop-shadow(0 12px 18px #0006)}.search-wrap{margin-top:24px;display:flex;gap:9px;background:white;padding:7px 8px 7px 16px;border-radius:13px;max-width:520px}.search-wrap input{border:0;outline:0;min-width:0;flex:1;color:var(--ink)}.search-wrap button{border:0;background:#2e6fa8;color:white;border-radius:9px;padding:9px 17px;cursor:pointer}main section{padding:62px 0}.section-head{margin-bottom:24px}.kicker{color:#5489b8}.section-head h2{font-size:1.7rem;margin:4px 0;color:#1c2c42}.section-head p{margin:4px 0;color:var(--muted);font-size:.9rem}.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.category-card{display:flex;align-items:center;gap:18px;text-align:left;width:100%;padding:25px;background:white;border:1px solid var(--line);border-radius:20px;cursor:pointer;transition:.2s;color:var(--ink)}.category-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#bfd5e8}.category-icon{width:58px;height:58px;flex:none;border-radius:17px;background:#eaf3fb;display:grid;place-items:center;font-size:27px}.category-copy{flex:1}.category-copy strong{display:block;font-size:1.15rem}.category-copy small{color:var(--muted)}.category-arrow{font-size:1.4rem;color:#8aa0b6}#catalog{background:white}.catalog-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}.back-button{border:1px solid #dce5ee;background:white;color:#42617e;padding:8px 13px;border-radius:10px;cursor:pointer}.catalog-title{font-size:1.45rem;font-weight:800;color:#1c2c42}.app-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.app-card{display:flex;align-items:center;gap:14px;padding:17px;background:#fbfcfe;border:1px solid var(--line);border-radius:16px}.app-icon{width:48px;height:48px;flex:none;border-radius:14px;background:#eaf3fb;display:grid;place-items:center;font-size:23px}.app-info{min-width:0;flex:1}.app-info h3{font-size:.96rem;margin:0 0 3px}.app-info p{font-size:.8rem;color:var(--muted);margin:0}.app-status{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;background:#fff4df;color:#94631c;white-space:nowrap}.empty{padding:28px;text-align:center;color:var(--muted);background:#f8fafc;border-radius:14px}.journal-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.journal-card{background:white;border:1px solid var(--line);border-radius:16px;padding:20px}.journal-card small{color:#5489b8;font-weight:800}.journal-card h3{margin:5px 0;font-size:1rem}.journal-card p{margin:0;color:var(--muted);font-size:.83rem}footer{background:#101b30;color:#d9e4f0;padding:34px 0 22px}.footer-top{display:flex;justify-content:space-between;gap:20px}.footer-top p{font-size:.8rem;color:#9fb0c5}.footer-links{display:flex;gap:18px;flex-wrap:wrap;font-size:.78rem;color:#c1cede}.copyright{border-top:1px solid #ffffff1b;margin-top:22px;padding-top:15px;color:#8194aa;font-size:.72rem}.test-environment-label{position:fixed;top:10px;right:10px;z-index:99999;padding:6px 11px;border:1px solid #d97706;border-radius:999px;background:#fff7ed;color:#9a3412;font:700 12px/1.2 system-ui,sans-serif;pointer-events:none;box-shadow:0 2px 10px #0002}@media(max-width:700px){.wrap{width:calc(100% - 30px)}.nav-links{display:none}.hero{padding:48px 0 42px}.hero-inner{grid-template-columns:1fr}.hero-cat{display:none}.hero h1{font-size:2.25rem}.category-grid,.app-grid,.journal-grid{grid-template-columns:1fr}main section{padding:48px 0}.category-card{padding:19px}.catalog-top{align-items:flex-start}.footer-top{flex-direction:column}}
+</style></head><body>
+<header><div class="wrap nav"><a class="brand" href="#"><span class="logo">✦</span><span>AppiCat</span></a><nav class="nav-links"><a href="#categories">アプリを探す</a><a href="#journal">制作ノート</a><a href="#about">このサイトについて</a></nav></div></header>
 <main>
- <div class="hero">
-  <div class="wrap hero-inner">
-   <div>
-    <div class="eyebrow">YOUR DIGITAL TOOLBOX</div>
-    <h1>AIと一緒に、<br><span>便利</span>をつくる。</h1>
-    <p>日常や仕事の「ちょっと面倒」を、少し便利に。<br>AppiCatは、気軽に使えるWebアプリを集めた小さな保管庫です。</p>
-    <form class="searchbox" id="searchForm">
-     <span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="使いたいアプリを探す..." aria-label="アプリを検索">
-     <button type="submit">探す</button>
-    </form>
-    <div class="hero-note">登録不要で使えるツールも、少しずつ増やしていきます。</div>
-   </div>
-   <div class="mascot-area" aria-label="AppiCatの案内猫">
-    <div class="orbit"><div class="cat">🐈</div></div>
-    <div class="float-tag tag1">小さな便利を、ここに。</div>
-    <div class="float-tag tag2">Welcome to AppiCat</div>
-   </div>
-  </div>
- </div>
-
- <section class="wrap" id="pickup">
-  <div class="section-head"><div><div class="kicker">PICK UP</div><h2>おすすめアプリ</h2><p class="section-sub">まずはこちら。日々の作業をちょっと便利にするツールです。</p></div><a class="text-link" href="#apps">すべてのアプリを見る →</a></div>
-  <div class="cards">
-   <article class="card searchable" data-name="JAN補助ツール JAN Master Pro バーコード 商品コード 仕事">
-    <div class="card-top"><div class="app-icon">▥</div><span class="status dev">準備中</span></div>
-    <h3>JAN補助ツール</h3><p>JAN・ITFコードの確認や、商品情報の管理をサポートするツール。</p>
-    <div class="card-foot"><span>仕事・店舗向け</span><span>詳細を見る　→</span></div>
-   </article>
-   <article class="card searchable" data-name="収支管理 家計簿 お金 記録">
-    <div class="card-top"><div class="app-icon">￥</div><span class="status dev">準備中</span></div>
-    <h3>収支管理</h3><p>日々の収入と支出を記録し、自分のお金の流れを整理するアプリ。</p>
-    <div class="card-foot"><span>生活・お金</span><span>詳細を見る　→</span></div>
-   </article>
-   <article class="card searchable" data-name="小説執筆 創作 文章 エディタ">
-    <div class="card-top"><div class="app-icon">✎</div><span class="status dev">開発中</span></div>
-    <h3>小説執筆ツール</h3><p>作品や章、設定を整理しながら執筆を進めるための制作ツール。</p>
-    <div class="card-foot"><span>創作・文章</span><span>詳細を見る　→</span></div>
-   </article>
-  </div>
- </section>
-
- <section class="all-apps" id="apps">
-  <div class="wrap">
-   <div class="section-head"><div><div class="kicker">ALL APPS</div><h2>アプリを探す</h2><p class="section-sub">用途やカテゴリから、使いたいツールを見つけられます。</p></div></div>
-   <div class="category-row" id="filters">
-    <button class="chip active" data-filter="all">すべて</button><button class="chip" data-filter="work">仕事</button><button class="chip" data-filter="life">生活</button><button class="chip" data-filter="creative">創作</button><button class="chip" data-filter="other">その他</button>
-   </div>
-   <div class="all-grid" id="appGrid">
-    <article class="mini-card searchable" data-category="work" data-name="JAN補助ツール JAN Master Pro バーコード 商品コード">
-     <div class="app-icon">▥</div><div><h3>JAN補助ツール</h3><p>商品コードの確認・管理をサポート</p></div><span class="mini-arrow">→</span>
-    </article>
-    <article class="mini-card searchable" data-category="life" data-name="収支管理 家計簿 お金">
-     <div class="app-icon">￥</div><div><h3>収支管理</h3><p>日々のお金の流れを記録</p></div><span class="mini-arrow">→</span>
-    </article>
-    <article class="mini-card searchable" data-category="creative" data-name="小説執筆ツール 創作 文章">
-     <div class="app-icon">✎</div><div><h3>小説執筆ツール</h3><p>作品・章・設定をまとめて管理</p></div><span class="mini-arrow">→</span>
-    </article>
-    <article class="mini-card searchable" data-category="other" data-name="便利ツール 開発予定">
-     <div class="app-icon">✧</div><div><h3>新しい便利ツール</h3><p>これから少しずつ追加予定</p></div><span class="mini-arrow">→</span>
-    </article>
-   </div>
-   <div class="empty" id="emptyState">該当するアプリはありません。</div>
-  </div>
- </section>
-
- <section class="wrap" id="journal">
-  <div class="section-head"><div><div class="kicker">JOURNAL</div><h2>制作ノート・お知らせ</h2><p class="section-sub">アプリの使い方や、制作の裏側、更新情報をお届けします。</p></div><a class="text-link" href="#journal">記事一覧を見る →</a></div>
-  <div class="journal">
-   <article class="journal-card"><div class="journal-icon">✧</div><div><small>ABOUT</small><h3>AppiCatについて</h3><p>どんな考えでアプリを作り、公開しているのかをご紹介します。</p></div></article>
-   <article class="journal-card"><div class="journal-icon">↗</div><div><small>UPDATE</small><h3>更新情報</h3><p>新しいアプリや、既存アプリの改善内容をお知らせします。</p></div></article>
-  </div>
- </section>
-
- <section class="wrap" id="about">
-  <div class="support" id="contact">
-   <div><div class="kicker">YOUR VOICE MAKES IT BETTER</div><h2>ご意見・不具合の報告</h2><p>「ここが使いにくい」「こんな機能がほしい」など、気づいたことをお聞かせください。</p></div>
-   <a class="primary" href="mailto:hello@appicat.example">ご意見を送る　→</a>
-  </div>
- </section>
-</main>
-<footer>
- <div class="wrap">
-  <div class="footer-top">
-   <div><a class="brand" href="#"><span class="logo">✦</span><span>AppiCat</span></a><p>AIと一緒に、便利をつくる。</p></div>
-   <div class="footer-links"><a href="#about">AppiCatについて</a><a href="#contact">お問い合わせ</a><a href="#">プライバシーポリシー</a><a href="#">利用規約</a></div>
-  </div>
-  <div class="copyright">© AppiCat. All rights reserved.</div>
- </div>
-</footer>
+<section class="hero"><div class="wrap hero-inner"><div><div class="eyebrow">YOUR DIGITAL TOOLBOX</div><h1>AIと一緒に、<br><span>便利</span>をつくる。</h1><p>日常や仕事の「ちょっと面倒」を、少し便利に。<br>目的に合った小さな道具を、ここから探してみてください。</p><form class="search-wrap" id="searchForm"><input id="searchInput" type="search" placeholder="アプリ名・キーワードで探す" aria-label="アプリを検索"><button type="submit">探す</button></form></div><div class="hero-cat" aria-hidden="true">🐈</div></div></section>
+<section class="wrap" id="categories"><div class="section-head"><div class="kicker">CATEGORIES</div><h2>どちらから探しますか？</h2><p>使う場面に合わせて、大きな分類から選べます。</p></div><div class="category-grid"><button class="category-card" data-category="private"><span class="category-icon">⌂</span><span class="category-copy"><strong>プライベート</strong><small>暮らし・お金・趣味など、個人で使う道具</small></span><span class="category-arrow">→</span></button><button class="category-card" data-category="work"><span class="category-icon">▣</span><span class="category-copy"><strong>仕事</strong><small>日々の業務や作業を便利にする道具</small></span><span class="category-arrow">→</span></button></div></section>
+<section id="catalog" hidden><div class="wrap"><div class="catalog-top"><div><div class="kicker">APP CATALOG</div><div class="catalog-title" id="catalogTitle">アプリ一覧</div></div><button class="back-button" id="backButton">← 分類に戻る</button></div><div class="app-grid" id="appGrid"></div><div class="empty" id="emptyState" hidden>この分類のアプリはまだありません。</div></div></section>
+<section class="wrap" id="searchResults" hidden><div class="section-head"><div class="kicker">SEARCH</div><h2>検索結果</h2><p id="searchSummary"></p></div><div class="app-grid" id="searchGrid"></div><div class="empty" id="searchEmpty" hidden>該当するアプリはありません。</div></section>
+<section class="wrap" id="journal"><div class="section-head"><div class="kicker">JOURNAL</div><h2>制作ノート・お知らせ</h2><p>アプリの使い方や制作の裏側、更新情報をお届けします。</p></div><div class="journal-grid"><article class="journal-card"><small>ABOUT</small><h3>AppiCatについて</h3><p>どんな考えでアプリを作り、公開しているのかをご紹介します。</p></article><article class="journal-card"><small>UPDATE</small><h3>更新情報</h3><p>新しいアプリや、既存アプリの改善内容をお知らせします。</p></article></div></section>
+<section class="wrap" id="about"><div class="journal-card"><div class="kicker">YOUR VOICE MAKES IT BETTER</div><h2>ご意見・不具合の報告</h2><p>「ここが使いにくい」「こんな機能がほしい」など、気づいたことをお聞かせください。</p><a href="mailto:hello@appicat.example">ご意見を送る →</a></div></section>
+</main><footer><div class="wrap"><div class="footer-top"><div><a class="brand" href="#"><span class="logo">✦</span><span>AppiCat</span></a><p>AIと一緒に、便利をつくる。</p></div><div class="footer-links"><a href="#about">このサイトについて</a><a href="#about">お問い合わせ</a><a href="#">プライバシーポリシー</a><a href="#">利用規約</a></div></div><div class="copyright">© AppiCat. All rights reserved.</div></div></footer>
+<div class="test-environment-label" id="testLabel" hidden>TEST環境</div>
 <script>
-const chips=[...document.querySelectorAll('.chip')];
-const cards=[...document.querySelectorAll('#appGrid .searchable')];
-const searchInput=document.getElementById('searchInput');
-let active='all',term='';
-function update(){
- let shown=0;
- cards.forEach(card=>{
-  const category=card.dataset.category;
-  const matchesCategory=active==='all'||category===active;
-  const matchesTerm=(card.dataset.name||'').toLowerCase().includes(term.toLowerCase());
-  card.style.display=matchesCategory&&matchesTerm?'flex':'none';
-  if(matchesCategory&&matchesTerm)shown++;
- });
- document.getElementById('emptyState').style.display=shown?'none':'block';
-}
-chips.forEach(chip=>chip.addEventListener('click',()=>{
- chips.forEach(c=>c.classList.remove('active'));chip.classList.add('active');active=chip.dataset.filter;update();
-}));
-document.getElementById('searchForm').addEventListener('submit',e=>{
- e.preventDefault();term=searchInput.value.trim();active='all';chips.forEach(c=>c.classList.toggle('active',c.dataset.filter==='all'));
- document.getElementById('apps').scrollIntoView({behavior:'smooth'});update();
-});
-searchInput.addEventListener('input',()=>{term=searchInput.value.trim();update()});
-</script>
-<div style="
-  position:fixed;top:10px;right:10px;z-index:99999;
-  padding:6px 11px;border:1px solid #d97706;
-  border-radius:999px;background:#fff7ed;color:#9a3412;
-  font:700 12px system-ui,sans-serif;
-">
-  TEST環境
-</div>
-
-</body>
-</html>
+// 仮データ。管理者ページ実装時にFirebaseから読み込む構造へ置き換えます。
+const apps=[
+{name:"収支管理",description:"日々の収入と支出を記録し、お金の流れを整理するアプリ。",icon:"￥",category:"private",status:"準備中",keywords:"家計簿 お金 収入 支出 記録"},
+{name:"小説執筆ツール",description:"作品・章・設定をまとめながら執筆を進める制作ツール。",icon:"✎",category:"private",status:"開発中",keywords:"小説 創作 文章 執筆 エディタ"},
+{name:"JAN補助ツール",description:"JAN・ITFコードの確認や、商品情報の管理をサポートするツール。",icon:"▥",category:"work",status:"準備中",keywords:"JAN ITF バーコード 商品コード 店舗 業務"}
+];
+const categoryNames={private:"プライベート",work:"仕事"};const catalog=document.getElementById("catalog"),catalogTitle=document.getElementById("catalogTitle"),appGrid=document.getElementById("appGrid");
+function cardHTML(app){return `<article class="app-card"><div class="app-icon">${app.icon}</div><div class="app-info"><h3>${app.name}</h3><p>${app.description}</p></div><span class="app-status">${app.status}</span></article>`}
+function showCategory(category){catalog.hidden=false;document.getElementById("searchResults").hidden=true;catalogTitle.textContent=categoryNames[category];const list=apps.filter(a=>a.category===category);appGrid.innerHTML=list.map(cardHTML).join("");document.getElementById("emptyState").hidden=list.length>0;catalog.scrollIntoView({behavior:"smooth",block:"start"})}
+document.querySelectorAll(".category-card").forEach(button=>button.addEventListener("click",()=>showCategory(button.dataset.category)));
+document.getElementById("backButton").addEventListener("click",()=>{catalog.hidden=true;document.getElementById("categories").scrollIntoView({behavior:"smooth"})});
+document.getElementById("searchForm").addEventListener("submit",e=>{e.preventDefault();const q=document.getElementById("searchInput").value.trim().toLowerCase();if(!q)return;catalog.hidden=true;const results=apps.filter(a=>(a.name+" "+a.description+" "+a.keywords).toLowerCase().includes(q));document.getElementById("searchSummary").textContent=`「${q}」の検索結果：${results.length}件`;document.getElementById("searchGrid").innerHTML=results.map(cardHTML).join("");document.getElementById("searchEmpty").hidden=results.length>0;const section=document.getElementById("searchResults");section.hidden=false;section.scrollIntoView({behavior:"smooth"})});
+// TEST環境の目印はPreviewホストでのみ表示。本番URLでは表示しません。
+if(location.hostname.startsWith("test-")||location.hostname.includes("-appicat.")){document.getElementById("testLabel").hidden=false}
+</script></body></html>
