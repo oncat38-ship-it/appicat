@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AppiCat Admin</title>
 <style>
-:root{--bg:#f6f7fc;--ink:#30334a;--muted:#858ba4;--line:#e9eaf3;--violet:#8175df;--soft:#f0edff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}
+:root{--bg:#f6f7fc;--ink:#30334a;--muted:#858ba4;--line:#e9eaf3;--violet:#8175df;--soft:#f0edff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}.layout{display:none}
 .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:#fff;border-right:1px solid var(--line);padding:24px 16px}.brand{font-weight:800;font-size:19px;margin:0 8px 35px}.mark{display:inline-grid;place-items:center;background:linear-gradient(135deg,#8f83ee,#c2b8ff);color:white;border-radius:11px;width:34px;height:34px;margin-right:8px}.brand small{display:block;color:#999;font-size:9px;letter-spacing:.15em;margin-left:43px}
 .nav button{display:block;width:100%;text-align:left;padding:12px;border:0;background:none;border-radius:11px;color:#68708a;margin:4px 0;cursor:pointer}.nav button.active{background:var(--soft);color:#6559c6;font-weight:700}
 .main{padding:30px;max-width:1200px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.eyebrow{font-size:10px;letter-spacing:.16em;color:var(--violet);font-weight:800}.top h1{font-size:25px;margin:5px 0}.user{background:#fff;border:1px solid var(--line);padding:9px 14px;border-radius:24px;font-size:12px}
@@ -10,11 +10,42 @@
 .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:520px}th,td{text-align:left;padding:12px;border-bottom:1px solid #f0f1f6;font-size:12px}th{color:#9a9fb1;font-size:10px}.status{border-radius:20px;padding:5px 9px;background:#fff3df;color:#b8893f;font-size:10px}.status.live{background:#e3f7ef;color:#389879}.actions button{border:0;background:#f5f5fb;border-radius:7px;padding:6px 9px;margin-right:4px;cursor:pointer;font-size:10px}
 .section{display:none}.section.show{display:block}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;color:#737991}.field input,.field select,.field textarea{width:100%}
 .modal-backdrop{display:none;position:fixed;inset:0;background:#25243b77;align-items:center;justify-content:center;padding:15px;z-index:10}.modal-backdrop.show{display:flex}.modal{background:#fff;border-radius:17px;padding:22px;width:min(450px,100%);max-height:90vh;overflow:auto}.modal h3{margin:0 0 15px}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.hint{font-size:11px;color:var(--muted);line-height:1.7}
+
+#authGate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-card{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 14px 40px #30334a12}
+.auth-brand{font-weight:800;font-size:21px;margin-bottom:8px}
+.auth-brand span{display:inline-grid;place-items:center;background:linear-gradient(135deg,#8f83ee,#c2b8ff);color:white;border-radius:11px;width:34px;height:34px;margin-right:8px}
+.auth-card h1{font-size:20px;margin:22px 0 6px}
+.auth-card p{font-size:12px;color:var(--muted);line-height:1.7}
+.auth-card label{display:block;font-size:11px;color:#737991;margin:14px 0 6px}
+.auth-card input{width:100%;font-size:14px}
+.auth-card button{width:100%;margin-top:18px}
+#authMessage{min-height:20px;color:#bd5967;font-size:12px;margin-top:12px}
+.user{display:flex;align-items:center;gap:10px}
+#logoutButton{border:0;background:var(--soft);color:#6559c6;border-radius:20px;padding:7px 11px;font-size:11px;cursor:pointer}
+
 @media(max-width:700px){.layout{grid-template-columns:1fr}.side{padding:12px;border-right:0;border-bottom:1px solid var(--line)}.brand{margin:0 5px 10px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;width:auto;padding:9px}.main{padding:20px 13px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:20px}.panel{padding:14px}.panelhead{align-items:flex-start;flex-direction:column}.search{min-width:0;width:100%}}
 </style></head><body>
+
+<div id="authGate">
+  <div class="auth-card">
+    <div class="auth-brand"><span>a</span>AppiCat</div>
+    <h1>管理者ログイン</h1>
+    <p>AppiCatの管理画面にアクセスするには、管理者アカウントでログインしてください。</p>
+    <form id="loginForm">
+      <label for="loginEmail">メールアドレス</label>
+      <input id="loginEmail" type="email" autocomplete="username" required>
+      <label for="loginPassword">パスワード</label>
+      <input id="loginPassword" type="password" autocomplete="current-password" required>
+      <button class="btn primary" id="loginButton" type="submit">ログイン</button>
+      <div id="authMessage" role="alert"></div>
+    </form>
+  </div>
+</div>
+
 <div class="layout"><aside class="side"><div class="brand"><span class="mark">a</span>AppiCat<small>ADMIN CONSOLE</small></div>
 <nav class="nav" id="adminNav"><button class="active" data-page="home">⌂　ダッシュボード</button><button data-page="apps">▦　アプリ管理</button><button data-page="cats">◈　分類管理</button><button data-page="settings">⚙　基本設定</button></nav></aside>
-<main class="main"><header class="top"><div><div class="eyebrow">APPICAT / CONTROL</div><h1 id="pageTitle">ダッシュボード</h1></div><div class="user">●　管理者</div></header>
+<main class="main"><header class="top"><div><div class="eyebrow">APPICAT / CONTROL</div><h1 id="pageTitle">ダッシュボード</h1></div><div class="user"><span>●　管理者</span><button id="logoutButton" type="button">ログアウト</button></div></header>
 <section id="home" class="section show"><p class="intro">サイトの掲載内容をまとめて管理できます。</p><div class="stats"><div class="stat"><small>登録アプリ</small><strong id="countApps">0 件</strong></div><div class="stat"><small>公開中</small><strong id="countLive">0 件</strong></div><div class="stat"><small>分類</small><strong id="countCats">0 件</strong></div></div>
 <div class="panel"><div class="panelhead"><div><h2>最近の掲載アプリ</h2><span class="muted">登録内容のサンプル</span></div><button class="btn soft" id="showApps">一覧を見る →</button></div><div class="table-wrap"><table><thead><tr><th>アプリ名</th><th>分類</th><th>状態</th><th>操作</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
 <div class="panel"><h2>クイック操作</h2><p><button class="btn primary" id="quickAddApp">＋ アプリを登録</button> <button class="btn soft" id="quickAddCat">＋ 分類を追加</button></p></div></section>
@@ -65,4 +96,84 @@ document.addEventListener("click",e=>{const a=e.target.closest("[data-edit-app]"
 $("appSearch").addEventListener("input",e=>{const q=e.target.value.trim().toLocaleLowerCase();const list=state.apps.filter(a=>(a.name+" "+a.desc).toLocaleLowerCase().includes(q));$("appRows").innerHTML=list.map(a=>`<tr><td><b>${esc(a.name)}</b><br><span class="muted">${esc(a.desc)}</span></td><td>${esc(catName(a.cat))}</td><td>${esc(a.status)}</td><td>${a.order}</td><td class="actions"><button data-edit-app="${a.id}">編集</button><button data-toggle-app="${a.id}">公開切替</button></td></tr>`).join("")||'<tr><td colspan="5">該当なし</td></tr>';});
 render();
 })();
-</script></body></html>
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBwynWXDpSe14QQ9aj7YB6r0IM-SXThpkY",
+  authDomain: "appicat.firebaseapp.com",
+  projectId: "appicat",
+  storageBucket: "appicat.firebasestorage.app",
+  messagingSenderId: "354787416430",
+  appId: "1:354787416430:web:46e6088c1d12c64869897f",
+  measurementId: "G-5Q2JSM7NMV"
+};
+
+const ADMIN_UID = "WqB04ZUMt2WxZPXpoc4PCxkgbav2";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const gate = document.getElementById("authGate");
+const layout = document.querySelector(".layout");
+const form = document.getElementById("loginForm");
+const emailInput = document.getElementById("loginEmail");
+const passwordInput = document.getElementById("loginPassword");
+const message = document.getElementById("authMessage");
+const loginButton = document.getElementById("loginButton");
+const logoutButton = document.getElementById("logoutButton");
+
+function showLogin(errorText = "") {
+  gate.style.display = "flex";
+  layout.style.display = "none";
+  message.textContent = errorText;
+}
+function showAdmin() {
+  gate.style.display = "none";
+  layout.style.display = "grid";
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    showLogin();
+    return;
+  }
+  if (user.uid !== ADMIN_UID) {
+    await signOut(auth);
+    showLogin("このアカウントには管理画面へのアクセス権がありません。");
+    return;
+  }
+  showAdmin();
+});
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  message.textContent = "";
+  loginButton.disabled = true;
+  loginButton.textContent = "ログイン中…";
+  try {
+    await signInWithEmailAndPassword(auth, emailInput.value.trim(), passwordInput.value);
+  } catch (error) {
+    const messages = {
+      "auth/invalid-credential": "メールアドレスまたはパスワードを確認してください。",
+      "auth/user-not-found": "このメールアドレスのアカウントは見つかりません。",
+      "auth/wrong-password": "パスワードが正しくありません。",
+      "auth/too-many-requests": "試行回数が多すぎます。しばらくしてからお試しください。",
+      "auth/network-request-failed": "通信に失敗しました。ネットワークを確認してください。"
+    };
+    showLogin(messages[error.code] || "ログインできませんでした。入力内容とFirebaseの設定を確認してください。");
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "ログイン";
+  }
+});
+
+logoutButton.addEventListener("click", async () => {
+  await signOut(auth);
+});
+</script>
+
+</body></html>
