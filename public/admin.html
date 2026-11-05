@@ -21,7 +21,7 @@
 .auth-card input{width:100%;font-size:14px}
 .auth-card button{width:100%;margin-top:18px}
 #authMessage{min-height:20px;color:#bd5967;font-size:12px;margin-top:12px}
-.user{display:flex;align-items:center;gap:10px}
+.layout{display:none}.user{display:flex;align-items:center;gap:10px}
 #logoutButton{border:0;background:var(--soft);color:#6559c6;border-radius:20px;padding:7px 11px;font-size:11px;cursor:pointer}
 
 @media(max-width:700px){.layout{grid-template-columns:1fr}.side{padding:12px;border-right:0;border-bottom:1px solid var(--line)}.brand{margin:0 5px 10px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;width:auto;padding:9px}.main{padding:20px 13px}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:20px}.panel{padding:14px}.panelhead{align-items:flex-start;flex-direction:column}.search{min-width:0;width:100%}}
@@ -41,13 +41,13 @@
 
 <div class="layout"><aside class="side"><div class="brand"><span class="mark">a</span>AppiCat<small>ADMIN CONSOLE</small></div>
 <nav class="nav" id="adminNav"><button class="active" data-page="home">⌂　ダッシュボード</button><button data-page="apps">▦　アプリ管理</button><button data-page="cats">◈　分類管理</button><button data-page="settings">⚙　基本設定</button></nav></aside>
-<main class="main"><header class="top"><div><div class="eyebrow">APPICAT / CONTROL</div><h1 id="pageTitle">ダッシュボード</h1></div><div class="user"><span>●　管理者</span><button id="logoutButton" type="button">ログアウト</button></div></header>
+<main class="main"><header class="top"><div><div class="eyebrow">APPICAT / CONTROL</div><h1 id="pageTitle">ダッシュボード</h1></div><div class="user"><button class="btn primary" id="publishButton" type="button">公開内容を更新</button><span>●　管理者</span><button id="logoutButton" type="button">ログアウト</button></div></header>
 <section id="home" class="section show"><p class="intro">サイトの掲載内容をまとめて管理できます。</p><div class="stats"><div class="stat"><small>登録アプリ</small><strong id="countApps">0 件</strong></div><div class="stat"><small>公開中</small><strong id="countLive">0 件</strong></div><div class="stat"><small>分類</small><strong id="countCats">0 件</strong></div></div>
 <div class="panel"><div class="panelhead"><div><h2>最近の掲載アプリ</h2><span class="muted">登録内容のサンプル</span></div><button class="btn soft" id="showApps">一覧を見る →</button></div><div class="table-wrap"><table><thead><tr><th>アプリ名</th><th>分類</th><th>状態</th><th>操作</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
 <div class="panel"><h2>クイック操作</h2><p><button class="btn primary" id="quickAddApp">＋ アプリを登録</button> <button class="btn soft" id="quickAddCat">＋ 分類を追加</button></p></div></section>
-<section id="apps" class="section"><p class="intro">公開ページに掲載するアプリを登録・編集します。</p><div class="panel"><div class="panelhead"><div><h2>アプリ一覧</h2><span class="muted">公開状態や表示順も管理できます</span></div><div><input class="search" id="appSearch" placeholder="アプリ名で検索"> <button class="btn primary" id="addApp">＋ 新規登録</button></div></div><div class="table-wrap"><table><thead><tr><th>アプリ名</th><th>分類</th><th>状態</th><th>表示順</th><th>操作</th></tr></thead><tbody id="appRows"></tbody></table></div><p class="hint">※ 現在は画面確認用のサンプルです。入力内容はページを開いている間だけ保持されます。Firebase保存・公開ページ連携はまだ行いません。</p></div></section>
+<section id="apps" class="section"><p class="intro">公開ページに掲載するアプリを登録・編集します。</p><div class="panel"><div class="panelhead"><div><h2>アプリ一覧</h2><span class="muted">公開状態や表示順も管理できます</span></div><div><input class="search" id="appSearch" placeholder="アプリ名で検索"> <button class="btn primary" id="addApp">＋ 新規登録</button></div></div><div class="table-wrap"><table><thead><tr><th>アプリ名</th><th>分類</th><th>状態</th><th>表示順</th><th>操作</th></tr></thead><tbody id="appRows"></tbody></table></div><p class="hint" id="saveStatus">編集内容はFirestoreの下書きに自動保存されます。公開ページへの反映は「公開内容を更新」から行います。</p></div></section>
 <section id="cats" class="section"><p class="intro">分類名を変更しても、内部IDでアプリとの紐付けを維持する設計です。</p><div class="panel"><div class="panelhead"><div><h2>分類一覧</h2><span class="muted">大分類・小分類を必要に応じて追加</span></div><button class="btn primary" id="addCat">＋ 分類を追加</button></div><div class="table-wrap"><table><thead><tr><th>分類名</th><th>階層</th><th>所属アプリ</th><th>操作</th></tr></thead><tbody id="catRows"></tbody></table></div></div></section>
-<section id="settings" class="section"><p class="intro">サイト全体に関する設定です。</p><div class="panel"><h2>サイト基本情報</h2><div class="field"><label for="siteName">サイト名</label><input id="siteName" value="AppiCat"></div><div class="field"><label for="siteTagline">キャッチコピー</label><input id="siteTagline" value="AIと一緒に、便利をつくる。"></div><p class="hint">設定の保存はFirebase接続時に実装します。</p></div></section></main></div>
+<section id="settings" class="section"><p class="intro">サイト全体に関する設定です。</p><div class="panel"><h2>サイト基本情報</h2><div class="field"><label for="siteName">サイト名</label><input id="siteName" value="AppiCat"></div><div class="field"><label for="siteTagline">キャッチコピー</label><input id="siteTagline" value="AIと一緒に、便利をつくる。"></div><p class="hint">設定内容はFirestoreの下書きに自動保存されます。</p></div></section></main></div>
 <div class="modal-backdrop" id="editModal" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalHeading"><h3 id="modalHeading"></h3><div id="modalContent"></div><div class="modal-foot"><button class="btn soft" id="cancelModal">キャンセル</button><button class="btn primary" id="saveModal">登録する</button></div></div></div>
 <script>
 (() => {
@@ -61,6 +61,7 @@ const pageNames={home:"ダッシュボード",apps:"アプリ管理",cats:"分�
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const catName=id=>state.cats.find(c=>c.id===id)?.name||"未分類";
 function render(){
+if(window.AppiCatFirebaseReady) window.dispatchEvent(new CustomEvent("appicat:data-changed"));
 $("countApps").textContent=state.apps.length+" 件";$("countLive").textContent=state.apps.filter(a=>a.status==="公開中").length+" 件";$("countCats").textContent=state.cats.length+" 件";
 const rows=state.apps.slice().sort((a,b)=>a.order-b.order).map(a=>`<tr><td><b>${esc(a.name)}</b><br><span class="muted">${esc(a.desc)}</span></td><td>${esc(catName(a.cat))}</td><td><span class="status ${a.status==="公開中"?"live":""}">${esc(a.status)}</span></td><td>${a.order}</td><td class="actions"><button data-edit-app="${a.id}">編集</button><button data-toggle-app="${a.id}">公開切替</button></td></tr>`).join("");
 $("appRows").innerHTML=rows||'<tr><td colspan="5">登録はありません</td></tr>';
@@ -91,12 +92,16 @@ $("editModal").addEventListener("click",e=>{if(e.target===$("editModal"))closeMo
 document.addEventListener("click",e=>{const a=e.target.closest("[data-edit-app]"),t=e.target.closest("[data-toggle-app]"),c=e.target.closest("[data-edit-cat]");if(a)editApp(state.apps.find(x=>x.id===a.dataset.editApp));if(t){const item=state.apps.find(x=>x.id===t.dataset.toggleApp);if(item){item.status=item.status==="公開中"?"準備中":"公開中";render();}}if(c)editCat(state.cats.find(x=>x.id===c.dataset.editCat));});
 $("appSearch").addEventListener("input",e=>{const q=e.target.value.trim().toLocaleLowerCase();const list=state.apps.filter(a=>(a.name+" "+a.desc).toLocaleLowerCase().includes(q));$("appRows").innerHTML=list.map(a=>`<tr><td><b>${esc(a.name)}</b><br><span class="muted">${esc(a.desc)}</span></td><td>${esc(catName(a.cat))}</td><td>${esc(a.status)}</td><td>${a.order}</td><td class="actions"><button data-edit-app="${a.id}">編集</button><button data-toggle-app="${a.id}">公開切替</button></td></tr>`).join("")||'<tr><td colspan="5">該当なし</td></tr>';});
 render();
+window.getAppiCatData=()=>({apps:state.apps,cats:state.cats,siteName:$("siteName").value,siteTagline:$("siteTagline").value});
+window.loadAppiCatData=(data)=>{if(Array.isArray(data.apps))state.apps=data.apps;if(Array.isArray(data.cats))state.cats=data.cats;if(typeof data.siteName==="string")$("siteName").value=data.siteName;if(typeof data.siteTagline==="string")$("siteTagline").value=data.siteTagline;render();};
 })();
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut }
   from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, addDoc, collection, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBwynWXDpSe14QQ9aj7YB6r0IM-SXThpkY",
@@ -110,12 +115,18 @@ const firebaseConfig = {
 const ADMIN_UID = "WqB04ZUMt2WxZPXpoc4PCxkgbav2";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 const gate = document.getElementById("authGate");
 const layout = document.querySelector(".layout");
 const message = document.getElementById("authMessage");
 const loginButton = document.getElementById("googleLoginButton");
 const logoutButton = document.getElementById("logoutButton");
+const publishButton = document.getElementById("publishButton");
+const saveStatus = document.getElementById("saveStatus");
+let saveTimer = null;
+let ready = false;
+let saving = false;
 
 function showLogin(text = "") {
   gate.style.display = "flex";
@@ -126,21 +137,95 @@ function showAdmin() {
   gate.style.display = "none";
   layout.style.display = "grid";
 }
+function status(text) { if (saveStatus) saveStatus.textContent = text; }
+function currentData() { return window.getAppiCatData ? window.getAppiCatData() : {apps:[],cats:[]}; }
+async function saveDraft() {
+  if (!ready || saving) return;
+  saving = true;
+  status("Firestoreに下書きを保存しています…");
+  try {
+    const data = currentData();
+    await setDoc(doc(db, "siteDrafts", "main"), {...data, updatedAt: serverTimestamp()});
+    status("下書きを保存しました");
+  } catch (error) {
+    console.error(error);
+    status("保存に失敗しました。Firestoreのルールと通信を確認してください。");
+  } finally { saving = false; }
+}
+function queueSave() {
+  if (!ready) return;
+  clearTimeout(saveTimer);
+  status("変更を検知しました。保存待ち…");
+  saveTimer = setTimeout(saveDraft, 650);
+}
+async function loadDraft() {
+  status("Firestoreからデータを読み込んでいます…");
+  const snap = await getDoc(doc(db, "siteDrafts", "main"));
+  if (snap.exists() && window.loadAppiCatData) window.loadAppiCatData(snap.data());
+  ready = true;
+  window.AppiCatFirebaseReady = true;
+  status(snap.exists() ? "Firestoreの下書きを読み込みました" : "初期データです。変更するとFirestoreに保存されます");
+}
+async function publishContent() {
+  if (!ready) return;
+  if (!confirm("現在の下書きを公開ページ用データに反映します。よろしいですか？")) return;
+  publishButton.disabled = true;
+  publishButton.textContent = "公開中…";
+  try {
+    await saveDraft();
+    const data = currentData();
+    const publicData = {
+      apps: data.apps.filter(item => item.status === "公開中"),
+      cats: data.cats,
+      siteName: data.siteName,
+      siteTagline: data.siteTagline,
+      publishedAt: serverTimestamp()
+    };
+    await setDoc(doc(db, "siteContent", "main"), publicData);
+    await addDoc(collection(db, "contentHistory"), {
+      action: "publish", summary: "公開内容を更新", appCount: publicData.apps.length,
+      categoryCount: publicData.cats.length, createdAt: serverTimestamp()
+    });
+    status("公開データを更新し、更新履歴を記録しました");
+    alert("公開用データを更新しました。公開ページ側の表示連携は次の工程で行います。");
+  } catch (error) {
+    console.error(error);
+    status("公開に失敗しました。Firestoreのルールを確認してください。");
+    alert("公開に失敗しました。Firestoreのルールと通信状態を確認してください。");
+  } finally {
+    publishButton.disabled = false;
+    publishButton.textContent = "公開内容を更新";
+  }
+}
+
+window.addEventListener("appicat:data-changed", queueSave);
+document.getElementById("siteName").addEventListener("input", queueSave);
+document.getElementById("siteTagline").addEventListener("input", queueSave);
+publishButton.addEventListener("click", publishContent);
+
 onAuthStateChanged(auth, async (user) => {
-  if (!user) return showLogin();
+  if (!user) { ready = false; window.AppiCatFirebaseReady = false; showLogin(); return; }
   if (user.uid !== ADMIN_UID) {
     await signOut(auth);
-    return showLogin("このGoogleアカウントには管理画面へのアクセス権がありません。");
+    ready = false;
+    window.AppiCatFirebaseReady = false;
+    showLogin("このGoogleアカウントには管理画面へのアクセス権がありません。");
+    return;
   }
   showAdmin();
+  try { await loadDraft(); }
+  catch (error) {
+    console.error(error);
+    status("Firestoreから読み込めません。セキュリティルールとデータベースを確認してください。");
+    alert("ログインはできましたが、Firestoreの読み込みに失敗しました。ルールが反映済みか確認してください。");
+  }
 });
 loginButton.addEventListener("click", async () => {
   message.textContent = "";
   loginButton.disabled = true;
   loginButton.textContent = "ログイン中…";
-  try {
-    await signInWithPopup(auth, provider);
-  } catch (error) {
+  try { await signInWithPopup(auth, provider); }
+  catch (error) {
     const errors = {
       "auth/popup-closed-by-user": "ログイン画面が閉じられました。もう一度お試しください。",
       "auth/popup-blocked": "ポップアップがブロックされました。ブラウザの設定を確認してください。",
