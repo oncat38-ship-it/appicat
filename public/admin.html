@@ -32,14 +32,10 @@
     <div class="auth-brand"><span>a</span>AppiCat</div>
     <h1>管理者ログイン</h1>
     <p>AppiCatの管理画面にアクセスするには、管理者アカウントでログインしてください。</p>
-    <form id="loginForm">
-      <label for="loginEmail">メールアドレス</label>
-      <input id="loginEmail" type="email" autocomplete="username" required>
-      <label for="loginPassword">パスワード</label>
-      <input id="loginPassword" type="password" autocomplete="current-password" required>
-      <button class="btn primary" id="loginButton" type="submit">ログイン</button>
+    <div class="google-login">
+      <button class="btn primary" id="googleLoginButton" type="button">Googleアカウントでログイン</button>
       <div id="authMessage" role="alert"></div>
-    </form>
+    </div>
   </div>
 </div>
 
@@ -99,9 +95,8 @@ render();
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import {
-  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut }
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBwynWXDpSe14QQ9aj7YB6r0IM-SXThpkY",
@@ -112,68 +107,53 @@ const firebaseConfig = {
   appId: "1:354787416430:web:46e6088c1d12c64869897f",
   measurementId: "G-5Q2JSM7NMV"
 };
-
 const ADMIN_UID = "WqB04ZUMt2WxZPXpoc4PCxkgbav2";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
+const provider = new GoogleAuthProvider();
 const gate = document.getElementById("authGate");
 const layout = document.querySelector(".layout");
-const form = document.getElementById("loginForm");
-const emailInput = document.getElementById("loginEmail");
-const passwordInput = document.getElementById("loginPassword");
 const message = document.getElementById("authMessage");
-const loginButton = document.getElementById("loginButton");
+const loginButton = document.getElementById("googleLoginButton");
 const logoutButton = document.getElementById("logoutButton");
 
-function showLogin(errorText = "") {
+function showLogin(text = "") {
   gate.style.display = "flex";
   layout.style.display = "none";
-  message.textContent = errorText;
+  message.textContent = text;
 }
 function showAdmin() {
   gate.style.display = "none";
   layout.style.display = "grid";
 }
-
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    showLogin();
-    return;
-  }
+  if (!user) return showLogin();
   if (user.uid !== ADMIN_UID) {
     await signOut(auth);
-    showLogin("このアカウントには管理画面へのアクセス権がありません。");
-    return;
+    return showLogin("このGoogleアカウントには管理画面へのアクセス権がありません。");
   }
   showAdmin();
 });
-
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+loginButton.addEventListener("click", async () => {
   message.textContent = "";
   loginButton.disabled = true;
   loginButton.textContent = "ログイン中…";
   try {
-    await signInWithEmailAndPassword(auth, emailInput.value.trim(), passwordInput.value);
+    await signInWithPopup(auth, provider);
   } catch (error) {
-    const messages = {
-      "auth/invalid-credential": "メールアドレスまたはパスワードを確認してください。",
-      "auth/user-not-found": "このメールアドレスのアカウントは見つかりません。",
-      "auth/wrong-password": "パスワードが正しくありません。",
-      "auth/too-many-requests": "試行回数が多すぎます。しばらくしてからお試しください。",
+    const errors = {
+      "auth/popup-closed-by-user": "ログイン画面が閉じられました。もう一度お試しください。",
+      "auth/popup-blocked": "ポップアップがブロックされました。ブラウザの設定を確認してください。",
+      "auth/unauthorized-domain": "このサイトのドメインがFirebaseの承認済みドメインに登録されていません。",
       "auth/network-request-failed": "通信に失敗しました。ネットワークを確認してください。"
     };
-    showLogin(messages[error.code] || "ログインできませんでした。入力内容とFirebaseの設定を確認してください。");
+    message.textContent = errors[error.code] || "Googleログインに失敗しました。Firebaseの設定を確認してください。";
   } finally {
     loginButton.disabled = false;
-    loginButton.textContent = "ログイン";
+    loginButton.textContent = "Googleアカウントでログイン";
   }
 });
-
-logoutButton.addEventListener("click", async () => {
-  await signOut(auth);
-});
+logoutButton.addEventListener("click", () => signOut(auth));
 </script>
 
 </body></html>
