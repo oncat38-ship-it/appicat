@@ -32,7 +32,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 25px;color:#999db0;font-s
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-const cfg={apiKey:"AIzaSyBwynWXDpSe14QQ9aj7YB6R0IM-SXThpk",authDomain:"appicat.firebaseapp.com",projectId:"appicat",storageBucket:"appicat.firebasestorage.app",messagingSenderId:"354787416430",appId:"1:354787416430:web:46e6088c1d12c64869897f",measurementId:"G-5Q2JSM7NMV"};
+const cfg={apiKey:"AIzaSyBwynWXDpSe14QQ9aj7YB6r0IM-SXThpk",authDomain:"appicat.firebaseapp.com",projectId:"appicat",storageBucket:"appicat.firebasestorage.app",messagingSenderId:"354787416430",appId:"1:354787416430:web:46e6088c1d12c64869897f",measurementId:"G-5Q2JSM7NMV"};
 const db=getFirestore(initializeApp(cfg));
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const test=()=>{const e=document.getElementById("test");if(e&&(location.hostname.startsWith("test-")||location.hostname.includes("-appicat.")))e.hidden=false};
