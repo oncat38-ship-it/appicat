@@ -29,6 +29,8 @@ footer{border-top:1px solid var(--line);padding:20px 0 25px;color:#999db0;font-s
 <label class="searchbox"><span>⌕</span><input id="search" type="search" placeholder="例：収支、文章、バーコード"></label><div class="app-grid" id="appGrid"></div><div class="empty" id="empty">該当するアプリはありません。別のキーワードで探してみてください。</div><p class="message" id="loadMessage">公開データを読み込んでいます…</p></section></main>
 <footer><div class="wrap foot"><span>© AppiCat　AIと一緒に、便利をつくる。</span><div class="foot-links"><a href="index.html">ホーム</a><a href="#">お問い合わせ</a></div></div></footer><div class="test" id="test" hidden>TEST ENVIRONMENT</div>
 
+
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
@@ -38,9 +40,7 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const test=()=>{const e=document.getElementById("test");if(e&&(location.hostname.startsWith("test-")||location.hostname.includes("-appicat.")))e.hidden=false};
 test();
 async function load(){const msg=document.getElementById("loadMessage");try{const snap=await getDoc(doc(db,"siteContent","main"));if(!snap.exists()){msg.textContent="公開データがまだありません。管理画面から「公開内容を更新」してください。";return null}return snap.data()}catch(e){console.error(e);msg.textContent="公開データを読み込めませんでした。通信状況またはFirestoreの読み取りルールを確認してください。";return null}}
-</script>
 
-<script type="module">
 const data=await load();const grid=document.getElementById("appGrid"),empty=document.getElementById("empty");
 if(data){document.getElementById("loadMessage").style.display="none";const cat=(data.cats||[]).find(c=>c.id==="work");if(cat){document.getElementById("pageTitle").textContent=cat.name;document.getElementById("crumbTitle").textContent=cat.name;document.title=cat.name+"｜AppiCat";}
 const apps=(data.apps||[]).filter(a=>a.status==="公開中"&&a.cat==="work").sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
@@ -48,4 +48,5 @@ grid.innerHTML=apps.map((a,i)=>{const body=`<span class="app-icon">${a.icon||["�
 if(!apps.length){empty.style.display="block";empty.textContent="この分類には、現在公開中のアプリはありません。"}
 }
 const s=document.getElementById("search");s.addEventListener("input",()=>{let q=s.value.trim().toLowerCase(),n=0;document.querySelectorAll(".app").forEach(c=>{let ok=c.innerText.toLowerCase().includes(q);c.style.display=ok?"":"none";if(ok)n++});empty.style.display=n?"none":"block"});
-</script></body></html>
+</script>
+</body></html>

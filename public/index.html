@@ -29,6 +29,8 @@ footer{border-top:1px solid var(--line);padding:20px 0 25px;color:#999db0;font-s
 <label class="searchbox"><span>⌕</span><input id="search" type="search" placeholder="分類名・用途から探す"></label><div class="category-grid" id="categories"></div><div class="empty" id="empty">該当する分類はありません</div><p class="message" id="loadMessage">公開データを読み込んでいます…</p></section></main>
 <footer><div class="wrap foot"><span>© AppiCat　AIと一緒に、便利をつくる。</span><div class="foot-links"><a href="index.html">ホーム</a><a href="#">お問い合わせ</a></div></div></footer><div class="test" id="test" hidden>TEST ENVIRONMENT</div>
 
+
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
@@ -38,9 +40,7 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const test=()=>{const e=document.getElementById("test");if(e&&(location.hostname.startsWith("test-")||location.hostname.includes("-appicat.")))e.hidden=false};
 test();
 async function load(){const msg=document.getElementById("loadMessage");try{const snap=await getDoc(doc(db,"siteContent","main"));if(!snap.exists()){msg.textContent="公開データがまだありません。管理画面から「公開内容を更新」してください。";return null}return snap.data()}catch(e){console.error(e);msg.textContent="公開データを読み込めませんでした。通信状況またはFirestoreの読み取りルールを確認してください。";return null}}
-</script>
 
-<script type="module">
 const data=await load();const host=document.getElementById("categories"),empty=document.getElementById("empty");
 if(data){document.getElementById("loadMessage").style.display="none";document.title=(data.siteName||"AppiCat")+"｜アプリを探す";document.querySelector(".brand").lastChild.textContent=data.siteName||"AppiCat";document.getElementById("heroTagline").textContent=data.siteTagline||"暮らしにも、仕事にも。目的に合うツールを、かんたんに。";
 const icons={private:"♡",work:"▦"};const descriptions={private:"お金・暮らし・趣味・創作",work:"日々の業務をもっとスムーズに"};
@@ -48,4 +48,5 @@ host.innerHTML=(data.cats||[]).filter(c=>!c.parent).map(c=>{const href=c.id==="p
 if(!host.children.length)document.getElementById("loadMessage").textContent="分類が登録されていません。管理画面から分類を追加してください。";
 }
 const s=document.getElementById("search");s.addEventListener("input",()=>{let q=s.value.trim().toLowerCase(),n=0;document.querySelectorAll(".category").forEach(c=>{let ok=c.innerText.toLowerCase().includes(q);c.style.display=ok?"":"none";if(ok)n++});empty.style.display=n?"none":"block"});
-</script></body></html>
+</script>
+</body></html>
